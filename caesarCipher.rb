@@ -11,6 +11,9 @@ Notes:
   -We need to use the ASCII values to tell us if it is a space or capitalized as well
 =end
 
+require 'sinatra'
+require 'sinatra/reloader'
+
 def caesar_cipher(string, iShift)
   #Create an array of the words
   wordsM = string.split("")
@@ -30,10 +33,14 @@ def caesar_cipher(string, iShift)
   wordsM.each do |char|
     if lowercase.key?(char)
       iNew = lowercase[char] + iShift
-      if(iNew > 'z'.ord) then iNew = (iNew-'z'.ord)+('a'.ord -1) end
+      while(iNew > 'z'.ord)
+        iNew = (iNew-'z'.ord)+('a'.ord() -1)
+      end
     elsif uppercase.key?(char)
       iNew = uppercase[char] + iShift
-      if(iNew > 'Z'.ord) then iNew = (iNew-'Z'.ord)+('A'.ord-1) end
+      while(iNew > 'Z'.ord)
+        iNew = (iNew-'Z'.ord)+('A'.ord() -1)
+      end
     else
       iNew = char.ord
     end
@@ -42,14 +49,22 @@ def caesar_cipher(string, iShift)
 
   cipher = newWordsM.join
 
-  puts cipher
-
+  return cipher
 end
 
-puts 'What is your desired phrase to encrypt?'
-string = gets
 
-puts 'What is your desired number to shift by?'
-num = gets.to_i
+get '/' do
+  phrase = params["phrase"]
+  num = params["num"].to_i
 
-caesar_cipher(string, num)
+  if !phrase.nil? then cipher = caesar_cipher(phrase, num) end
+  erb :index, :locals => {:cipher => cipher}
+end
+
+=begin
+  puts 'What is your desired phrase to encrypt?'
+  string = gets
+
+  puts 'What is your desired number to shift by?'
+  num = gets.to_i
+=end

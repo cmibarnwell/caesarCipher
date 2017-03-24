@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Caesar Cipher</title>
+</head>
+<body>
+<h1>Caesar Cipher</h1>
+  <form>
+    <p>Phrase to be encrypted</p>
+    <input type='text' name='phrase' /><br>
+    <p>Number of letters to shift</p>
+    <input type='text' name='num' /><br><br>
+    <input type='submit' value='Encrypt!' />
+  </form>
+  <p><%= if cipher.to_s.length >=1 then  "The encryption is: #{cipher}" end%></p>
+</body>
+</html>
