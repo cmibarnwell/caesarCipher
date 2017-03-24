@@ -8,26 +8,48 @@ Our general algorithm is as follows:
 Notes:
   -If the given chars shift value pushes it beyond Z's positional value we need to wrap the value as if it is from 0
 
-  -We need to use the ACII values to tell us if it is a space or capitalized as well
+  -We need to use the ASCII values to tell us if it is a space or capitalized as well
 =end
-
-
-
-
 
 def caesar_cipher(string, iShift)
   #Create an array of the words
   wordsM = string.split("")
 
-  for letter in a..z
-    lowercase = Hash[('a'.ord..'z'.ord).map {|num|}]
+  lowercase = Hash.new{}
+  uppercase = Hash.new{}
+  newWordsM = []
+
+  for letter in 'a'..'z'
+    lowercase[letter] = letter.ord
   end
 
+  for letter in 'A'..'Z'
+    uppercase[letter] = letter.ord
+  end
 
   wordsM.each do |char|
-    if char.ord in lowercase
+    if lowercase.key?(char)
+      iNew = lowercase[char] + iShift
+      if(iNew > 'z'.ord) then iNew = (iNew-'z'.ord)+('a'.ord -1) end
+    elsif uppercase.key?(char)
+      iNew = uppercase[char] + iShift
+      if(iNew > 'Z'.ord) then iNew = (iNew-'Z'.ord)+('A'.ord-1) end
+    else
+      iNew = char.ord
+    end
+    newWordsM.push(iNew.chr)
   end
+
+  cipher = newWordsM.join
+
+  puts cipher
 
 end
 
-caesar_cipher("What a string!", 5)
+puts 'What is your desired phrase to encrypt?'
+string = gets
+
+puts 'What is your desired number to shift by?'
+num = gets.to_i
+
+caesar_cipher(string, num)
